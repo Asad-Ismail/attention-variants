@@ -58,11 +58,23 @@ class causalSelfAttention(nn.Module):
         B,T,d= x.shape
 
 
+class transformerDecoder(nn.Module):
+     def __init__(self, vocab_size=58, hidden_dims=512, n_layers=1):
+        super().__init__()
+        self.layers=n_layers
+        self.hidden_dims = hidden_dims
+        self.encode = nn.Embedding(vocab_size, hidden_dims)
+
+
+
+
 if __name__=="__main__": 
 
     inp_txt = "Sky is "
     tokenizer = CharacterTokenizer()
-    
+    input_ids= tokenizer.encode(inp_txt)
+    print(len(tokenizer.idx2char))
+    print(input_ids)
 
 
 
