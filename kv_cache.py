@@ -6,8 +6,8 @@ from utils import set_seed
 
 
 def generate_with_cache(model, prompt_tokens, num_tokens=50):
+
     x = torch.tensor([prompt_tokens]).to(model.device)  # Shape: [1, prompt_length]
-    
     # Process the entire prompt and get initial output and cache
     start_time = time.time()
     output, kv_cache = model(x, return_cache=True)
@@ -34,7 +34,7 @@ def generate_with_cache(model, prompt_tokens, num_tokens=50):
 
 def generate_without_cache(model, prompt_tokens, num_tokens=50):
     # Start with the prompt tokens
-    all_tokens = prompt_tokens.copy()
+    all_tokens=prompt_tokens
     x = torch.tensor([all_tokens]).to(model.device)
     
     start_time = time.time()
@@ -64,15 +64,16 @@ def generate_without_cache(model, prompt_tokens, num_tokens=50):
 
 
 if __name__=="__main__": 
-
+    set_seed()
     inp_txt = "Sky is "
     tokenizer = CharacterTokenizer()
     input_ids= tokenizer.encode(inp_txt)
-    inp_tensor = torch.tensor([input_ids])
     model=transformerDecoder()
-
-    out_without_c=generate_without_cache(model,inp_tensor)
-    out_with_c=generate_with_cache(model,inp_tensor)
-
-    print(out_without_c)
-    print()
+    model.to("cpu")
+    out_without_cache=generate_without_cache(model,input_ids.copy())
+    out_with_cache=generate_with_cache(model,input_ids.copy())
+    print(f"Output without cache")
+    print(out_without_cache["tokens"])
+    print(f"Output with cache")
+    print(out_with_cache["tokens"])
+    assert out_without_cache["tokens"]==out_with_cache["tokens"], "Output is not same when using and not using cache :("
