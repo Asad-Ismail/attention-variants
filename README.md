@@ -5,7 +5,7 @@ Large Language Models (LLMs) require significant computational resources for bot
 The techniques are divided into three main categories: 
 1. **Model-Level**, 
 2. **System-Level**
-3. **Process-Level Optimizations**.
+3. **Process-Level Optimizations**
 
 ---
 
